@@ -3,8 +3,29 @@ package org.example;
 import net.java.games.input.*;
 import swiftbot.SwiftBotAPI;
 
-
-
+/*
+Components of a playstation controller:
+  A  id=A
+  B  id=B
+  X  id=X
+  Y  id=Y
+  Left Thumb  id=Left Thumb
+  Right Thumb  id=Right Thumb
+  Left Thumb 2  id=Left Thumb 2
+  Right Thumb 2  id=Right Thumb 2
+  Select  id=Select
+  Start  id=Start
+  Mode  id=Mode
+  Left Thumb 3  id=Left Thumb 3
+  Right Thumb 3  id=Right Thumb 3
+  x  id=x
+  y  id=y
+  z  id=z
+  rx  id=rx
+  ry  id=ry
+  rz  id=rz
+ pov  id=pov
+*/
 
 
 public class TestingGamepad {
@@ -20,8 +41,9 @@ public class TestingGamepad {
             System.exit(5);
         }
 
-
-        Event event = new Event();
+        UnderlightFader fader = new UnderlightFader(swiftBot);
+        Thread faderThread = new Thread(fader);
+        faderThread.start();
 
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
 
@@ -42,12 +64,13 @@ public class TestingGamepad {
             System.out.println("  " + comp.getName() + "  id=" + comp.getIdentifier().getName());
         }
 
+        */
 
         if (gamepad == null) {
             System.out.println("No controller found!");
             return;
         }
-        */
+
 
         Component xAxis = gamepad.getComponent(Component.Identifier.Axis.X);
         Component yAxis = gamepad.getComponent(Component.Identifier.Axis.Y);
@@ -109,19 +132,20 @@ public class TestingGamepad {
 
             swiftBot.startMove(leftWheel, rightWheel);
 
+
+            //SHUTDOWN
             Component shareButton = gamepad.getComponent(Component.Identifier.Button.SELECT);
 
             if (shareButton != null && shareButton.getPollData() == 1.0f) {
                 System.out.println("Share button pressed: shutting down.");
                 swiftBot.stopMove();
+                fader.stop();
                 System.exit(0);
             }
 
             Thread.sleep(50);
 
         }
-
-
 
     }
 
