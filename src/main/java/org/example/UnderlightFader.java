@@ -8,6 +8,11 @@ public class UnderlightFader implements Runnable
 
     private volatile boolean running = true;
 
+    public boolean GetRunning()
+    {
+        return running;
+    }
+
     public UnderlightFader(SwiftBotAPI api)
     {
         this.swiftBot = api;
