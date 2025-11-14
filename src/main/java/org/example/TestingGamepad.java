@@ -43,9 +43,11 @@ public class TestingGamepad {
 
         UnderlightFader fader = new UnderlightFader(swiftBot);
         Thread faderThread = new Thread(fader);
-        faderThread.start();
+
+
 
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+
 
         Controller gamepad = null;
 
@@ -135,6 +137,18 @@ public class TestingGamepad {
 
             //SHUTDOWN
             Component shareButton = gamepad.getComponent(Component.Identifier.Button.SELECT);
+            Component dpadLeft = gamepad.getComponent(Component.Identifier.Axis.POV);
+
+            if (dpadLeft != null && dpadLeft.getPollData() == Component.POV.LEFT){
+                if (!fader.GetRunning()) {
+                    System.out.println("Starting underlight fader.");
+                    faderThread.start();
+                }
+                else if (fader.GetRunning()) {
+                    System.out.println("Stopping underlight fader.");
+                    fader.stop();
+                }
+            }
 
             if (shareButton != null && shareButton.getPollData() == 1.0f) {
                 System.out.println("Share button pressed: shutting down.");
@@ -146,7 +160,5 @@ public class TestingGamepad {
             Thread.sleep(50);
 
         }
-
     }
-
 }
