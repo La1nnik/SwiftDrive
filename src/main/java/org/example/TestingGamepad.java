@@ -1,39 +1,13 @@
 package org.example;
-
 import net.java.games.input.*;
 import swiftbot.SwiftBotAPI;
-
-/*
-Components of a playstation controller:
-  A  id=A
-  B  id=B
-  X  id=X
-  Y  id=Y
-  Left Thumb  id=Left Thumb
-  Right Thumb  id=Right Thumb
-  Left Thumb 2  id=Left Thumb 2
-  Right Thumb 2  id=Right Thumb 2
-  Select  id=Select
-  Start  id=Start
-  Mode  id=Mode
-  Left Thumb 3  id=Left Thumb 3
-  Right Thumb 3  id=Right Thumb 3
-  x  id=x
-  y  id=y
-  z  id=z
-  rx  id=rx
-  ry  id=ry
-  rz  id=rz
- pov  id=pov
-*/
-
 
 public class TestingGamepad {
 
     static SwiftBotAPI swiftBot;
 
-
     public static void main(String[] args) throws InterruptedException {
+
         try {
             swiftBot = SwiftBotAPI.INSTANCE;
         } catch (Exception e) {
@@ -41,16 +15,14 @@ public class TestingGamepad {
             System.exit(5);
         }
 
+
         UnderlightFader fader = new UnderlightFader(swiftBot);
         Thread faderThread = new Thread(fader);
-
-
+        faderThread.start();
 
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
 
-
         Controller gamepad = null;
-
         for (Controller c : controllers) {
             if (c.getType() == Controller.Type.GAMEPAD || c.getType() == Controller.Type.STICK) {
                 gamepad = c;
@@ -58,107 +30,90 @@ public class TestingGamepad {
             }
         }
 
-        System.out.println("Using controller: " + gamepad.getName());
-
-        /*
-        System.out.println("Components:");
-        for (Component comp : gamepad.getComponents()) {
-            System.out.println("  " + comp.getName() + "  id=" + comp.getIdentifier().getName());
-        }
-
-        */
-
         if (gamepad == null) {
-            System.out.println("No controller found!");
+            System.out.println("No controller found.");
             return;
         }
-
 
         Component xAxis = gamepad.getComponent(Component.Identifier.Axis.X);
         Component yAxis = gamepad.getComponent(Component.Identifier.Axis.Y);
+        Component shareButton = gamepad.getComponent(Component.Identifier.Button.SELECT);
+        Component dpadLeft = gamepad.getComponent(Component.Identifier.Axis.POV);
 
+        float deadzone = 0.2f;
+        final float maxSpeed = 100;
 
-
-        if (xAxis == null || yAxis == null) {
-            System.out.println("Left stick axes not found!");
-            return;
-        }
-
-        float deadzone = 0.2f; // ignore tiny inputs
-
-        float maxSpeed = 100;
-
-
-
+        boolean lastDpadLeft = false;
 
         while (true) {
-            // poll the controller to update values
-            boolean ok;
-            try {
-                ok = gamepad.poll();
-            } catch (Exception e) {
-                System.out.println("Controller poll failed: " + e.getMessage());
-                Thread.sleep(500);
-                continue;
+
+            if (!gamepad.poll()) {
+                System.out.println("Controller disconnected.");
+                exitGracefully(fader, faderThread);
             }
-            if (!ok) {
-                System.out.println("Controller poll returned false (maybe disconnected).");
-                Thread.sleep(500);
-                continue;
-            }
-
-
-
 
             float xValue = xAxis.getPollData();
             float yValue = yAxis.getPollData();
 
-
-            float turn = xValue * Math.abs(xValue) * Math.abs(xValue);
-
             if (Math.abs(xValue) < deadzone) xValue = 0;
             if (Math.abs(yValue) < deadzone) yValue = 0;
 
-
-            // Invert y-axis (pushing stick forward gives negative)
             yValue = -yValue;
 
+            float turn = xValue * Math.abs(xValue) * Math.abs(xValue);
 
             int leftWheel = (int) ((yValue + turn) * maxSpeed);
             int rightWheel = (int) ((yValue - turn) * maxSpeed);
 
-            //clamping wheel speeds to -100 to 100
             leftWheel = Math.max(-100, Math.min(100, leftWheel));
             rightWheel = Math.max(-100, Math.min(100, rightWheel));
-
 
             swiftBot.startMove(leftWheel, rightWheel);
 
 
-            //SHUTDOWN
-            Component shareButton = gamepad.getComponent(Component.Identifier.Button.SELECT);
-            Component dpadLeft = gamepad.getComponent(Component.Identifier.Axis.POV);
+            // ---- TOGGLE UNDERLIGHT ----
 
-            if (dpadLeft != null && dpadLeft.getPollData() == Component.POV.LEFT){
-                if (!fader.GetRunning()) {
+            boolean dpadLeftPressed =
+                    (dpadLeft != null && dpadLeft.getPollData() == Component.POV.LEFT);
+
+            if (dpadLeftPressed && !lastDpadLeft) {
+
+                if (!fader.isRunning()) {
                     System.out.println("Starting underlight fader.");
-                    faderThread.start();
-                }
-                else if (fader.GetRunning()) {
+                    fader.setRunning(true);
+
+                } else {
                     System.out.println("Stopping underlight fader.");
-                    fader.stop();
+                    fader.setRunning(false);
+                    swiftBot.disableUnderlights();
                 }
             }
+
+            lastDpadLeft = dpadLeftPressed;
+
+
+            // ---- SHUTDOWN ----
 
             if (shareButton != null && shareButton.getPollData() == 1.0f) {
                 System.out.println("Share button pressed: shutting down.");
-                swiftBot.stopMove();
-                fader.stop();
-                System.exit(0);
+
+                exitGracefully(fader, faderThread);
             }
 
             Thread.sleep(50);
-
         }
+
     }
+
+
+
+
+
+     static void exitGracefully(UnderlightFader fader, Thread faderThread) throws InterruptedException {
+        swiftBot.stopMove();
+        fader.shutdown();
+        faderThread.join();
+        System.exit(0);
+    }
+
 }
