@@ -1,11 +1,14 @@
 # SwiftDrive - control you SwiftBot using a playsation controller
 
+
 <p align="center">
   <img src="https://img.shields.io/badge/Java-17+-blue" />
-  <img src="https://img.shields.io/badge/Platform-SwiftBot-Raspberry%20Pi-orange" />
+  <img src="https://img.shields.io/badge/Platform-SwiftBot-0A82FF" />
   <img src="https://img.shields.io/badge/Input-PS4%20Gamepad-7957D5" />
-  <img src="https://img.shields.io/badge/Threading-Safe%20&%20Clean-brightgreen" />
+  <img src="https://img.shields.io/badge/Threading-Safe%20and%20Clean-brightgreen" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow" />
 </p>
+
 
 A responsive and safe controller interface for the **SwiftBot robot**, using a **PlayStation-style gamepad**.
 Includes smooth movement control, a color-fading underlight animation running in a dedicated thread
