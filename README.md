@@ -4,7 +4,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Java-17+-blue" />
   <img src="https://img.shields.io/badge/Platform-SwiftBot-0A82FF" />
-  <img src="https://img.shields.io/badge/Input-PS4%20Gamepad-7957D5" />
+  <img src="https://img.shields.io/badge/Input-PS%20Gamepad-7957D5" />
   <img src="https://img.shields.io/badge/License-MIT-yellow" />
 </p>
 
