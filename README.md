@@ -14,13 +14,13 @@ Includes smooth movement control, a color-fading underlight animation running in
 
 ---
 
-## ✨ Features
+## Features
 
-* 🎮 **Analog joystick drive control**
+* **Analog joystick drive control**
 
   * Smooth cubic-turn calculations
   * Deadzone filtering
-* 🌈 **Underlight fading system**
+* **Underlight fading system**
 
   * Runs in a background thread
   * Can be toggled live with the D-pad
@@ -29,7 +29,7 @@ Includes smooth movement control, a color-fading underlight animation running in
 
 ---
 
-## 🎮 Controls
+## Controls
 
 | Input            | Action                         |
 | ---------------- | ------------------------------ |
@@ -41,7 +41,7 @@ Includes smooth movement control, a color-fading underlight animation running in
 
 
 
-## 🧠 How It Works
+## How It Works
 
 ### Main Loop
 
@@ -62,7 +62,7 @@ START → waits for running = true
 ```
 
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Requirements
 
@@ -81,7 +81,7 @@ sudo java -Djava.library.path=. \
 
 ---
 
-## 💡 Future Improvements
+## Future Improvements
 
 * Add support for different gamepands and input devices
 * Add button layot customization 
@@ -89,7 +89,7 @@ sudo java -Djava.library.path=. \
 
 ---
 
-## 📜 License
+## License
 
 MIT License
 You’re free to use, modify, and copy this project.
