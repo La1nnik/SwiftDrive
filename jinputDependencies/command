@@ -1,0 +1,7 @@
+javac -cp .:SwiftBot-API-6.0.0.jar:jinput-2.0.10.jar:coreapi-2.0.11-SNAPSHOT.jar:linux-plugin-2.0.11-SNAPSHOT.jar TestingGamepad.java UnderlightFader.java
+
+########################################
+
+ sudo java -Djava.library.path=. -cp .:SwiftBot-API-6.0.0.jar:jinput-2.0.10.jar:jinput-2.0.10-nreapi-2.0.11-SNAPSHOT.jar:linux-plugin-2.0.11-SNAPSHOT.jar TestingGamepad
+
+
