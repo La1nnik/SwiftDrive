@@ -71,15 +71,32 @@ START → waits for running = true
 * JInput JAR + native libraries which can be found in jinputDependencies
 * SwiftBot hardware with I2C enabled
 
-### To Start Run Command
+### To Start - Project Setup
+
+1. **Create a project directory:**
 
 ```bash
-sudo java -Djava.library.path=. \
- -cp .:SwiftBot-API.jar:jinput.jar:jinput-natives.jar \
- TestingGamepad
+mkdir SwiftDrive
+cd SwiftDrive
 ```
 
----
+2. **Download the run script:**
+
+```bash
+wget https://raw.githubusercontent.com/La1nnik/SwiftDrive/master/run.sh
+```
+
+3. **Turn the file into an executable**
+
+ ```bash
+chmod +x run.sh
+```
+
+4. **Simply run**
+   
+ ```bash
+./run.sh
+```
 
 ## Future Improvements
 
