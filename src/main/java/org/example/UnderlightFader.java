@@ -1,4 +1,4 @@
-package org.example;
+
 import swiftbot.SwiftBotAPI;
 
 public class UnderlightFader implements Runnable
