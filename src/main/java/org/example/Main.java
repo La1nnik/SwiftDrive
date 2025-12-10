@@ -1,4 +1,4 @@
-package org.example;
+
 import net.java.games.input.*;
 import swiftbot.SwiftBotAPI;
 
@@ -33,7 +33,7 @@ public class Main
 
         if (gamepad == null) {
             System.out.println("No controller found.");
-            return;
+            System.exit(0);
         }
 
         Component xAxis = gamepad.getComponent(Component.Identifier.Axis.X);

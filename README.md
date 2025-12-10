@@ -18,7 +18,7 @@ Includes smooth movement control, a color-fading underlight animation running in
 
 * **Analog joystick drive control**
 
-  * Smooth cubic-turn calculations
+  * Smooth turn calculations
   * Deadzone filtering
 * **Underlight fading system**
 
@@ -67,8 +67,8 @@ START → waits for running = true
 ### Requirements
 
 * Java 17+
-* SwiftBot API JARs
-* JInput JAR + native libraries
+* SwiftBot API JAR
+* JInput JAR + native libraries which can be found in jinputDependencies
 * SwiftBot hardware with I2C enabled
 
 ### To Start Run Command
