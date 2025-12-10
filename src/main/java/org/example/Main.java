@@ -1,4 +1,4 @@
-package org.example;
+
 import net.java.games.input.*;
 import swiftbot.SwiftBotAPI;
 
